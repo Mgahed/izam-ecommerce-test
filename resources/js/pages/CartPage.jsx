@@ -8,8 +8,9 @@ import {
 import {useNavigate} from 'react-router-dom';
 import OrderService from '../services/order';
 import ShopService from '../services/shop';
-import {useSelector, useDispatch} from 'react-redux';
-import {clearCart as clearCartAction} from '../redux/actions/cartActions';
+import {useSelector} from 'react-redux';
+import { useCart } from '../redux/hooks';
+import { useAuth } from '../redux/hooks';
 
 // Import new components
 import CartHeader from '../components/cart/CartHeader';
@@ -18,9 +19,8 @@ import OrderSummary from '../components/cart/OrderSummary';
 import EmptyCart from '../components/cart/EmptyCart';
 
 const CartPage = () => {
-    const {items: cart, total} = useSelector(state => state.cart);
-    const dispatch = useDispatch();
-    const {isAuthenticated} = useSelector(state => state.auth);
+    const { items: cart, total, clear: clearCart } = useCart();
+    const { isAuthenticated } = useAuth();
     const navigate = useNavigate();
 
     const [loading, setLoading] = useState(false);
@@ -70,7 +70,7 @@ const CartPage = () => {
 
             await OrderService.createOrder(products);
             setSuccess('Order placed successfully!');
-            dispatch(clearCartAction());
+            clearCart();
 
             setTimeout(() => {
                 navigate('/orders');

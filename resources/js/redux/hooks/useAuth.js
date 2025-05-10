@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { login, register, logout } from '../actions/authActions';
+import { login, register, logout } from '../slices/authSlice';
 
 export const useAuth = () => {
     const dispatch = useDispatch();
@@ -8,7 +8,12 @@ export const useAuth = () => {
     // Login function
     const loginUser = async (email, password) => {
         try {
-            return await dispatch(login(email, password));
+            const resultAction = await dispatch(login({ email, password }));
+            if (login.fulfilled.match(resultAction)) {
+                return resultAction.payload;
+            } else {
+                throw new Error(resultAction.payload || 'Login failed');
+            }
         } catch (error) {
             throw error;
         }
@@ -17,7 +22,12 @@ export const useAuth = () => {
     // Register function
     const registerUser = async (name, email, password, password_confirmation) => {
         try {
-            return await dispatch(register(name, email, password, password_confirmation));
+            const resultAction = await dispatch(register({ name, email, password, password_confirmation }));
+            if (register.fulfilled.match(resultAction)) {
+                return resultAction.payload;
+            } else {
+                throw new Error(resultAction.payload || 'Registration failed');
+            }
         } catch (error) {
             throw error;
         }

@@ -29,10 +29,9 @@ import {
     ExpandLess,
 } from '@mui/icons-material';
 import {Link as RouterLink, useNavigate} from 'react-router-dom';
-import {useSelector, useDispatch} from 'react-redux';
+import {useSelector} from 'react-redux';
 import ProductCard from '../components/ProductCard';
 import ProductService from '../services/product';
-import {updateCartQuantity, removeFromCart} from '../redux/actions/cartActions';
 import ProductDetailsDrawer from '../components/ProductDetailsDrawer';
 import OrderSummaryPreview from '../components/OrderSummaryPreview';
 import BreadcrumbNav from '../components/BreadcrumbNav';

@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import { AppBar, Toolbar, Typography, Button, Badge, IconButton, Box, Container, Link as MuiLink, useMediaQuery, useTheme, Drawer, List, ListItem, ListItemText, Divider } from '@mui/material';
 import { ShoppingCart, Search as SearchIcon, Menu as MenuIcon, Close as CloseIcon } from '@mui/icons-material';
 import { Link, useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { logout } from '../redux/actions/authActions';
+import { useSelector } from 'react-redux';
+import { useAuth } from '../redux/hooks';
 
 const Header = () => {
-    const dispatch = useDispatch();
-    const { isAuthenticated } = useSelector(state => state.auth);
+    const { logout, isAuthenticated } = useAuth();
     const { itemCount } = useSelector(state => state.cart);
     const navigate = useNavigate();
     const theme = useTheme();
@@ -15,7 +14,7 @@ const Header = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     const handleLogout = async () => {
-        await dispatch(logout());
+        await logout();
         navigate('/login');
     };
 
