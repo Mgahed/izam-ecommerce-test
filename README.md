@@ -1,6 +1,6 @@
 # IZAM E-Commerce Platform
 
-A modern e-commerce application built with Laravel and React, featuring a product catalog, shopping cart, user authentication, order management, and admin dashboard.
+A modern e-commerce application built with Laravel and React, featuring a product catalog, shopping cart, user authentication, order management, and admin endpoints
 
 ## Features
 
