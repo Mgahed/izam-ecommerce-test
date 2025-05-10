@@ -24,7 +24,7 @@ A modern e-commerce application built with Laravel and React, featuring a produc
 ### Clone the repository
 
 ```bash
-git clone https://github.com/Mgahed/izam-ecommerce-test
+git clone https://github.com/Mgahed/izam-ecommerce-test izam
 cd izam
 ```
 
