@@ -1,0 +1,292 @@
+import React from 'react';
+import {
+    Drawer,
+    Box,
+    Typography,
+    IconButton,
+    Button,
+    Divider,
+    TextField, Chip
+} from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
+import {useDispatch, useSelector} from 'react-redux';
+import {addToCart, updateCartQuantity, removeFromCart} from '../redux/actions/cartActions';
+
+const ProductDetailsDrawer = ({open, product, onClose}) => {
+    const dispatch = useDispatch();
+    const cartItems = useSelector(state => state.cart.items);
+    const [quantity, setQuantity] = React.useState(0);
+
+    // Check if product is in cart
+    React.useEffect(() => {
+        if (product) {
+            const cartItem = cartItems.find(item => item.id === product.id);
+            setQuantity(cartItem ? cartItem.quantity : 0);
+        }
+    }, [product, cartItems]);
+
+    const handleQuantityChange = (e) => {
+        const value = parseInt(e.target.value);
+        if (!isNaN(value) && value >= 0 && product && value <= product.stock_quantity) {
+            setQuantity(value);
+            updateCart(value);
+        }
+    };
+
+    const handleIncrement = () => {
+        if (product && quantity < product.stock_quantity) {
+            const newQuantity = quantity + 1;
+            setQuantity(newQuantity);
+            updateCart(newQuantity);
+        }
+    };
+
+    const handleDecrement = () => {
+        if (quantity > 0) {
+            const newQuantity = quantity - 1;
+            setQuantity(newQuantity);
+            updateCart(newQuantity);
+        }
+    };
+
+    const updateCart = (newQuantity) => {
+        if (!product) return;
+
+        if (newQuantity === 0) {
+            // Remove from cart
+            dispatch(removeFromCart(product.id));
+        } else {
+            const cartItem = cartItems.find(item => item.id === product.id);
+            if (cartItem) {
+                // Update quantity
+                dispatch(updateCartQuantity(product.id, newQuantity));
+            } else {
+                // Add to cart
+                dispatch(addToCart(product, newQuantity));
+            }
+        }
+    };
+
+    if (!product) return null;
+
+    return (
+        <Drawer
+            anchor="right"
+            open={open}
+            onClose={onClose}
+            PaperProps={{
+                sx: {
+                    width: {xs: '100%', sm: '450px'},
+                    p: 3,
+                    overflowY: 'auto'
+                }
+            }}
+        >
+            <Box sx={{position: 'relative'}}>
+                <IconButton
+                    onClick={onClose}
+                    sx={{
+                        position: 'absolute',
+                        right: 0,
+                        top: 0,
+                        width: 12,
+                        height: 16,
+                    }}
+                >
+                    <CloseIcon/>
+                </IconButton>
+
+                <Typography variant="h5" sx={{
+                    fontWeight: '700',
+                    mb: 2,
+                }}>
+                    Product Details
+                </Typography>
+
+                <Box sx={{position: 'relative'}}
+                >
+                    {quantity > 0 && (
+                        <Box
+                            sx={{
+                                position: 'absolute',
+                                bottom: 10,
+                                right: 10,
+                                zIndex: 2,
+                                width: 32,
+                                height: 32,
+                                borderRadius: '50%',
+                                bgcolor: '#2563EB',
+                                color: 'white',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                fontWeight: 'bold',
+                                fontSize: '14px',
+                                boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+                            }}
+                        >
+                            {quantity}
+                        </Box>
+                    )}
+                    <Box
+                        component="img"
+                        src={product.image_path}
+                        alt={product.name}
+                        sx={{
+                            width: '100%',
+                            // maxHeight: '320px',
+                            maxHeight: '250px',
+                            objectFit: 'contain',
+                            borderRadius: 2,
+                            mb: 3
+                        }}
+                    />
+                </Box>
+
+                <Box sx={{display: 'flex', justifyContent: 'space-between', mb: 1}}>
+                    <Typography variant="h4" sx={{
+                        mb: 1,
+                        fontSize: '20px',
+                        fontWeight: 700
+                    }}>
+                        {product.name}
+                    </Typography>
+
+                    <Box item variant="body2" color="text.secondary" sx={{
+                        // width: 69.83,
+                        height: 28,
+                        mb: 3,
+                    }}>
+                        <Chip label={product.category ? product.category.name : 'T-shirts'}
+                              sx={{fontWeight: 400, fontSize: 14}}/>
+                    </Box>
+                </Box>
+
+                <Typography variant="h5" fontWeight="bold" sx={{
+                    fontWeight: 700,
+                    fontSize: 24,
+                }}>
+                    ${product.price}
+                </Typography>
+
+                <Divider sx={{my: 2}}/>
+
+                <Typography sx={{
+                    mb: 2,
+                    fontSize: '16px',
+                    fontWeight: 500,
+                }}>
+                    Product Details
+                </Typography>
+
+                <Box sx={{display: 'flex', justifyContent: 'space-between', mb: 1}}>
+                    <Typography sx={{
+                        fontSize: '14px',
+                        fontWeight: 400,
+                    }}>Category:</Typography>
+                    <Typography sx={{
+                        fontSize: '14px',
+                        fontWeight: 500,
+                    }}>
+                        {product.category ? product.category.name : 'T-shirts'}
+                    </Typography>
+                </Box>
+
+                <Box sx={{display: 'flex', justifyContent: 'space-between', mb: 2}}>
+                    <Typography sx={{
+                        fontSize: '14px',
+                        fontWeight: 400,
+                    }}>Stock:</Typography>
+                    <Typography sx={{
+                        fontSize: '14px',
+                        fontWeight: 500,
+                    }}>
+                        {product.stock_quantity} items
+                    </Typography>
+                </Box>
+
+                <Divider sx={{my: 2}}/>
+
+                <Box sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                }}>
+                    <Typography sx={{
+                        fontSize: '16px',
+                        fontWeight: 500,
+                    }}>
+                        Quantity
+                    </Typography>
+
+                    <Box sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        border: '1px solid #e0e0e0',
+                        borderRadius: 1,
+                        justifyContent: 'space-between',
+                        mb: 3
+                    }}>
+                        <IconButton
+                            onClick={handleDecrement}
+                            disabled={quantity <= 0}
+                            sx={{borderRadius: 0, backgroundColor: '#F3F4F6', height: 40, width: 40}}
+                        >
+                            <RemoveIcon fontSize="small"/>
+                        </IconButton>
+
+                        <TextField
+                            value={quantity}
+                            onChange={handleQuantityChange}
+                            inputProps={{
+                                style: {textAlign: 'center'},
+                                min: 0,
+                                max: product.stock_quantity,
+                                readOnly: true,
+                            }}
+                            variant="standard"
+                            sx={{
+                                width: '60px',
+                                '& .MuiInput-underline:before': {borderBottom: 'none'},
+                                '& .MuiInput-underline:after': {borderBottom: 'none'},
+                                '& .MuiInput-underline:hover:before': {borderBottom: 'none'},
+                            }}
+                        />
+
+                        <IconButton
+                            onClick={handleIncrement}
+                            disabled={quantity >= product.stock_quantity}
+                            sx={{borderRadius: 0, backgroundColor: '#F3F4F6', height: 40, width: 40}}
+                        >
+                            <AddIcon fontSize="small"/>
+                        </IconButton>
+                    </Box>
+
+                </Box>
+
+                <Button
+                    variant="contained"
+                    fullWidth
+                    size="large"
+                    sx={{
+                        bgcolor: 'black',
+                        color: 'white',
+                        borderRadius: 2,
+                        py: 1.5,
+                        fontWeight: 600,
+                        '&:hover': {bgcolor: '#333'}
+                    }}
+                    onClick={() => {
+                        updateCart(quantity);
+                        onClose();
+                    }}
+                >
+                    Add to Cart
+                </Button>
+            </Box>
+        </Drawer>
+    );
+};
+
+export default ProductDetailsDrawer;

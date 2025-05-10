@@ -1,0 +1,13 @@
+export const ADD_TO_CART = 'ADD_TO_CART';
+export const REMOVE_FROM_CART = 'REMOVE_FROM_CART';
+export const UPDATE_CART_QUANTITY = 'UPDATE_CART_QUANTITY';
+export const CLEAR_CART = 'CLEAR_CART';
+export const LOAD_CART_FROM_STORAGE = 'LOAD_CART_FROM_STORAGE'; // For persistence
+
+// Auth Action Types
+export const AUTH_LOGIN_SUCCESS = 'AUTH_LOGIN_SUCCESS';
+export const AUTH_REGISTER_SUCCESS = 'AUTH_REGISTER_SUCCESS';
+export const AUTH_LOGOUT = 'AUTH_LOGOUT';
+export const AUTH_LOADING = 'AUTH_LOADING';
+export const AUTH_ERROR = 'AUTH_ERROR';
+export const AUTH_LOADED_USER = 'AUTH_LOADED_USER';
