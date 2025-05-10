@@ -11,33 +11,32 @@ import {
     Chip
 } from '@mui/material';
 import {Add, Remove} from '@mui/icons-material';
-import {useDispatch} from 'react-redux';
-import {updateCartQuantity, removeFromCart} from '../redux/actions/cartActions';
+import { useCart } from '../redux/hooks';
 
 const CartItem = ({item}) => {
-    const dispatch = useDispatch();
+    const { updateQuantity, remove } = useCart();
 
     const handleQuantityChange = (e) => {
         const value = parseInt(e.target.value);
         if (value >= 1 && value <= (item.stock_quantity || 99)) {
-            dispatch(updateCartQuantity(item.id, value));
+            updateQuantity(item.id, value);
         }
     };
 
     const handleIncrement = () => {
         if (item.quantity < (item.stock_quantity || 99)) {
-            dispatch(updateCartQuantity(item.id, item.quantity + 1));
+            updateQuantity(item.id, item.quantity + 1);
         }
     };
 
     const handleDecrement = () => {
         if (item.quantity > 1) {
-            dispatch(updateCartQuantity(item.id, item.quantity - 1));
+            updateQuantity(item.id, item.quantity - 1);
         }
     };
 
     const handleRemove = () => {
-        dispatch(removeFromCart(item.id));
+        remove(item.id);
     }
 
     const stock = item.stock_quantity !== undefined ? item.stock_quantity : 25;

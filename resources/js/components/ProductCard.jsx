@@ -11,12 +11,11 @@ import {
     Badge, Chip, Grid
 } from '@mui/material';
 import {Add, Remove} from '@mui/icons-material';
-import {useDispatch, useSelector} from 'react-redux';
-import {addToCart as addToCartAction, updateCartQuantity, removeFromCart} from '../redux/actions/cartActions';
+import {useSelector} from 'react-redux';
+import { useCart } from '../redux/hooks';
 
 const ProductCard = ({product, onProductClick}) => {
-    const dispatch = useDispatch();
-    const cartItems = useSelector(state => state.cart.items);
+    const { items: cartItems, add: addToCart, remove: removeFromCart, updateQuantity } = useCart();
     const [quantity, setQuantity] = useState(0);
 
     // Check if product is already in cart and get its quantity
@@ -60,14 +59,14 @@ const ProductCard = ({product, onProductClick}) => {
         if (newQuantity === 0) {
             // Remove from cart if quantity is 0
             if (cartItem) {
-                dispatch(removeFromCart(product.id));
+                removeFromCart(product.id);
             }
         } else if (cartItem) {
             // Update quantity if product is already in cart
-            dispatch(updateCartQuantity(product.id, newQuantity));
+            updateQuantity(product.id, newQuantity);
         } else {
             // Add to cart if product is not in cart
-            dispatch(addToCartAction(product, newQuantity));
+            addToCart(product, newQuantity);
         }
     };
 
@@ -84,7 +83,6 @@ const ProductCard = ({product, onProductClick}) => {
     };
 
     return (
-
         <Card
             elevation={0}
             sx={{

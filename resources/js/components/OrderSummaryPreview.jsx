@@ -10,14 +10,12 @@ import {
     CircularProgress
 } from '@mui/material';
 import { Add, Remove } from '@mui/icons-material';
-import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { updateCartQuantity, removeFromCart } from '../redux/actions/cartActions';
+import { useCart } from '../redux/hooks';
 import ShopService from '../services/shop';
 
 const OrderSummaryPreview = () => {
-    const { items: cartItems, total } = useSelector(state => state.cart);
-    const dispatch = useDispatch();
+    const { items: cartItems, total, updateQuantity, remove: removeFromCart } = useCart();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
     const [settings, setSettings] = useState({
@@ -41,12 +39,12 @@ const OrderSummaryPreview = () => {
     }, []);
 
     const handleIncrement = (item) => {
-        dispatch(updateCartQuantity(item.id, item.quantity + 1));
+        updateQuantity(item.id, item.quantity + 1);
     };
 
     const handleDecrement = (item) => {
         if (item.quantity > 1) {
-            dispatch(updateCartQuantity(item.id, item.quantity - 1));
+            updateQuantity(item.id, item.quantity - 1);
         }
     };
 
@@ -54,10 +52,10 @@ const OrderSummaryPreview = () => {
         // First set quantity to 0 in Redux
         const item = cartItems.find(item => item.id === productId);
         if (item) {
-            dispatch(updateCartQuantity(productId, 0));
+            updateQuantity(productId, 0);
         }
         // Then remove from cart
-        dispatch(removeFromCart(productId));
+        removeFromCart(productId);
     };
 
     // Get shipping and tax rates from settings

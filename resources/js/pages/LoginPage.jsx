@@ -11,13 +11,11 @@ import {
     CircularProgress
 } from '@mui/material';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../redux/actions/authActions';
+import { useAuth } from '../redux/hooks';
 
 const LoginPage = () => {
-    const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { isAuthenticated } = useSelector(state => state.auth);
+    const { login, isAuthenticated } = useAuth();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -37,7 +35,7 @@ const LoginPage = () => {
         setError('');
 
         try {
-            await dispatch(login(email, password));
+            await login(email, password);
             navigate('/');
         } catch (error) {
             setError(
