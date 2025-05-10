@@ -174,9 +174,8 @@ const Header = () => {
                             {/* Left: Logo */}
                             <Box
                                 sx={{ display: 'flex', alignItems: 'center', textDecoration: 'none', cursor: 'pointer' }}
-                                onClick={() => navigate('/')}
                             >
-                                <Box component="img" src="/logo.svg" alt="izam" sx={{ height: 32 }} />
+                                <Box component="img" src="/logo.svg" alt="izam" sx={{ height: 32 }} onClick={() => navigate('/')} />
                                 {/* Center: Navigation */}
                                 <Button component={Link} to="/" sx={{ color: 'black', fontWeight: 500, textTransform: 'none', fontSize: 16, px: 2, bgcolor: 'transparent' }}>Products</Button>
                                 <Button component={Link} to="/sell" variant="contained" sx={{ bgcolor: 'black', color: 'white', borderRadius: 2, boxShadow: 'none', fontWeight: 500, textTransform: 'none', fontSize: 15, px: 2, '&:hover': { bgcolor: '#222' } }}>Sell Your Product</Button>
