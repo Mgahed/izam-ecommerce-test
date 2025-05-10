@@ -171,7 +171,7 @@ The application uses Laravel Sanctum for token-based authentication:
 
 ## Overview Documentation
 
-For a more in-depth understanding of the system architecture, flows, and implementation details, refer to the [Documentation](http://izamtest.mgahed.com/docs/docs.html) section.
+For a more in-depth understanding of the system architecture, flows, and implementation details, refer to the [Documentation](https://izamtest.mgahed.com/docs/docs.html) section.
 
 ## API Documentation
 
@@ -183,6 +183,9 @@ https://izamtest.mgahed.com/api/documentation
 Or you can view the raw specification file at:
 
 https://izamtest.mgahed.com/api-docs.yaml
+
+## Live Demo
+https://izamtest.mgahed.com
 
 ### API Endpoints Overview
 
